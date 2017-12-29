@@ -1,80 +1,81 @@
 import os
 import string
 
-class Action :
+# Classe utilisée lors de la simulation du renommage de fichiers
+
+class Action:
     #constructeur
-    def __init__(self, nomdurepertoire, regle):
-        self.nomdurepertoire = nomdurepertoire
+    def __init__(self, nomrepertoire, regle):
+        self.nomrepertoire = nomrepertoire
         self.regle = regle
 
-    #getter
-    def get_nomdurepertoire(self):
-        return self.nomdurepertoire
+    #getter et setter
+    def get_nomrepertoire(self):
+        return self.nomrepertoire
+
+    def set_nomrepertoire(self, nomrepertoire):
+        self.nomrepertoire = nomrepertoire
 
     def get_regle(self):
         return self.regle
 
-    #setter
-    def set_nomdurepertoire(self, nomdurepertoire):
-        self.nomdurepertoire = nomdurepertoire
-
     def set_regle(self, regle):
-        self.regle =regle
+        self.regle = regle
 
+    # Méthode
 
     #str
     def __str__(self):
-        return self.nomdurepertoire + self.regle
+        return "Directory name : '" + self.nomrepertoire + "' \n" + self.regle.__str__()
 
-    # methode
-    #convertion des lettres en nombres
-    def conv_alphabet_en_nombre(self, alphabet):
-        num = 0
-        for nomb in alphabet:
-            if nomb in string.ascii_letters:
-                num = num * 26 + (ord(nomb.upper()) - ord('A')) + 1
-        return num
-
-    # convertion des nombres en lettres
+    #convertion de nombre en lettre
     def conv_nombre_en_alphabet(self, int):
-        str = ""
+        string = ""
         while int > 0:
             int, remainder = divmod(int - 1, 26)
-            str = chr(65 + remainder) + str
-        return str
+            string = chr(65 + remainder) + string
+        return string
 
-    #simule
-    def simule(self):
-        if self.regle.get_extention() == '':
-            original_nomfichiers = [nfich for nfich in os.listdir(self.nomdurepertoire)]
+    #convertion de lette en nombre
+    def conv_alphabet_en_nombre(self, alphabet):
+        num = 0
+        for c in alphabet:
+            if c in string.ascii_letters:
+                num = num * 26 + (ord(c.upper()) - ord('A')) + 1
+        return num
+
+    #simulation de renommage de fichiers
+    def simulation(self):
+        if self.regle.get_extension() == '':
+            original_nom_fichiers = [nomfichier for nomfichier in os.listdir(self.nomrepertoire)]
         else:
-            original_nomfichiers = [nfich for nfich in os.listdir(self.nomdurepertoire)
-                                   if nfich.endswith(tuple(self.regle.get_extention()))]
+            original_nom_fichiers = [nomfichier for nomfichier in os.listdir(self.nomrepertoire)
+                                   if nomfichier.endswith(tuple(self.regle.get_extension()))]
 
-        renommer_nomfichiers = []
+        renommer_nom_fichiers = []
 
         if self.regle.get_apartirde() == '' or self.regle.get_amorce() == '':
             apartirde = 0
-        elif self.regle.get_amorce() == 'lettre':
+        elif self.regle.get_amorce() == 'letter':
             apartirde = self.conv_alphabet_en_nombre(self.regle.get_apartirde())
-        elif self.regle.get_amorce() == 'nombre':
-            nombre = self.regle.get_from_init()
-            if nombre.isdigit():
-                apartirde = int(nombre)
+        elif self.regle.get_amorce() == 'number':
+            number = self.regle.get_apartirde()
+            if number.isdigit():
+                apartirde = int(number)
             else:
                 apartirde = 0
 
-        for original_nomfichier in original_nomfichiers:
-            renommer_nomfichier, extension = os.path.splitext(original_nomfichier)
+        for original_nom_fichier in original_nom_fichiers:
+            renommer_nom_fichier, extension = os.path.splitext(original_nom_fichier)
 
-            if isinstance(self.regle.get_nomfichier(),str):
-                renommer_nomfichier = self.regle.get_nomfichier()
+            if isinstance(self.regle.get_nomfichier(), str):
+                renommer_nom_fichier = self.regle.get_nomfichier()
 
             if self.regle.get_prefixe() != '':
-                renommer_nomfichier = self.regle.get_prefixe() + renommer_nomfichier
+                renommer_nom_fichier = self.regle.get_prefixe() + renommer_nom_fichier
 
             if self.regle.get_postfixe() != '':
-                renommer_nomfichier = self.regle.get_prefixe() + renommer_nomfichier
+                renommer_nom_fichier = renommer_nom_fichier + self.regle.get_postfixe()
 
             apartirde += 1
 
@@ -86,12 +87,10 @@ class Action :
                 amorce = '{0}'.format(str(apartirde).zfill(3))
 
             if amorce != '':
-                renommer_nomfichier = amorce + renommer_nomfichier
+                renommer_nom_fichier = amorce + renommer_nom_fichier
 
-            renommer_nomfichier = renommer_nomfichier + extension
+            renommer_nom_fichier = renommer_nom_fichier + extension
 
-            renommer_nomfichiers.append(renommer_nomfichier)
+            renommer_nom_fichiers.append(renommer_nom_fichier)
 
-        return original_nomfichiers, renommer_nomfichiers
-
-
+        return original_nom_fichiers, renommer_nom_fichiers
