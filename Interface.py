@@ -1,78 +1,101 @@
 from tkinter import *
-from tkinter.ttk import *
 from tkinter import ttk
-from Regle import*
+from Regle import *
+
+# Classe utilisée pour la disposition des pages InterfaceRenommer et InterfaceRegle
 
 class Interface:
     #constructeur
     def __init__(self, master):
+
+        #nom de repetoire
         self.master = master
-
-        #préfixe
-        self.Lab4 = Label(master, text="Préfixe")
-        self.Lab4.place(x=120, y=200)
-        self.value2 = StringVar()
-        self.entree_prefixe = Entry(master, textvariable=self.value2, width=15)
-        self.entree_prefixe.place(x=100, y=230, height=20)
-
-        #postfixe
-        self.Lab6 = Label(master, text="Postfixe")
-        self.Lab6.place(x=400, y=200)
-        self.value3 = StringVar()
-        self.entree_postfixe = Entry(master, textvariable=self.value3, width=15)
-        self.entree_postfixe.place(x=400, y=230, height=20)
-
-        #extention concernée
-        self.Lab7 = Label(master, text="Extention concernée")
-        self.Lab7.place(x=500, y=200)
-        self.value4 = StringVar()
-        self.entree_exConcernee = Entry(master, textvariable=self.value4, width=15)
-        self.entree_exConcernee.place(x=500, y=230, height=20)
-
-        #apartirde
-        self.Lab8 = Label(master, text="Apartirde")
-        self.Lab8.place(x=20, y=300)
-        self.value5 = StringVar()
-        self.entree_apartirde = Entry(master, textvariable=self.value5, width=15)
-        self.entree_apartirde.place(x=20, y=330, height=20)
-
-        #nom du fichier
-        self.Lab5 = Label(master, text="Nom du fichier")
-        self.Lab5.place(x=250, y=200)
-        self.value = StringVar()
-        self.entree_nomfichier = Entry(master, textvariable=self.value, width=30)
-        self.radioBut1 = ttk.Radiobutton(master, text="Original", variable =self.value, value ='origine')
-        self.radioBut2 = ttk.Radiobutton(master, textvariable=self.entree_nomfichier, variable=self.value, value='renommer')
-        self.radioBut1.place(x=250,y=250)
-        self.radioBut2.place(x=250,y=290)
-        self.entree_nomfichier.place(x=270, y=290, height =20)
+        self.nom_entree = Entry(self.master)
+        self.nom_entree.configure(width = 40)
+        self.nom_entree.place(x = 150, y = 55)
 
         #amorce
-        self.Lab3 = Label(master, text="Amorce")
-        self.Lab3.place(x=20, y=200)
-        self.amorceMenu= StringVar()
-        self.listeAmorce = ('Aucune', 'Lettre', 'Chiffre')
-        self.ChoixAmorce = ttk.Combobox(master, textvariable=self.amorceMenu, values=self.listeAmorce)
-        self.ChoixAmorce.place(x=20,y=230, width=60)
-        self.MAPPING = {'Aucune': '', 'Lettre': 'lettre', 'Chiffre': 'chiffre'}
+        self.amorce_label = Label(self.master, text = 'Amorce')
+        self.amorce_label.place(x = 35, y = 125)
+        self.combo_var = StringVar()
+        self.combo_var.set('Aucune')
+        self.amorce_box = ttk.Combobox(self.master, textvariable = self.combo_var, state = 'readonly', values = ['Aucune', 'Lettre', 'Chiffre'])
+        self.amorce_box.configure(width = 8)
+        self.amorce_box.place(x = 25, y = 150)
+        self.MAPPING = {'Aucune' : '', 'Lettre' : 'letter', 'Chiffre' : 'number'}
+
+        #apartirde
+        self.apartirde_label = Label(self.master, text = 'A partir de')
+        self.apartirde_label.place(x = 27, y = 225)
+        self.apartirde_entree = Entry(self.master)
+        self.apartirde_entree.configure(width = 9)
+        self.apartirde_entree.place(x = 27, y = 250)
+
+        #prefixe
+        self.prefixe_label = Label(self.master, text = 'Préfixe')
+        self.prefixe_label.place(x = 140, y = 125)
+        self.prefixe_entree = Entry(self.master)
+        self.prefixe_entree.configure(width = 10)
+        self.prefixe_entree.place(x = 129, y = 150)
+
+        #nomfichier
+        self.nomfichier_label = Label(self.master, text = 'Nom du fichier')
+        self.nomfichier_label.place(x = 225, y = 125)
+        self.radio_var = StringVar()
+        self.radio_var.set('original')
+        self.nomfichier_radiobouton1 = ttk.Radiobutton(self.master, text = 'Nom original', variable = self.radio_var, value = 'original')
+        self.nomfichier_radiobouton2 = ttk.Radiobutton(self.master, variable = self.radio_var, value = 'renomme')
+        self.nomfichier_radiobouton1.place(x = 215, y = 150)
+        self.nomfichier_radiobouton2.place(x = 215, y = 180)
+        self.nomfichier_entree = Entry(self.master)
+        self.nomfichier_entree.configure(width = 12)
+        self.nomfichier_entree.place(x = 235, y = 180)
+
+        #postfixe
+        self.postfixe_label = Label(self.master, text = 'Postfixe')
+        self.postfixe_label.place(x = 350, y = 125)
+        self.postfixe_entree = Entry(self.master)
+        self.postfixe_entree.configure(width = 10)
+        self.postfixe_entree.place(x = 342, y = 150)
+
+        #extension
+        self.extension_label = Label(self.master, text = 'Extension(s) concernée(s)')
+        self.extension_label.place(x = 440, y = 125)
+        self.extension_entree = Entry(self.master)
+        self.extension_entree.configure(width = 20)
+        self.extension_entree.place(x = 447, y = 150)
 
         #image
-        self.img = PhotoImage(file='image.png')
-        self.imgLab = Label(self.master, image=self.img)
-        self.imgLab.place(x=700, y=20)
+        self.image = PhotoImage(file = 'Pandalogo.png')
+        self.image_label = Label(self.master, image = self.image)
+        self.image_label.place(x = 450, y = 20)
 
-    #méthode récupérer regles
+    # Méthodes
+
+    #récupération des règles
     def get_regle(self):
-        amorce = self.MAPPING[self.ChoixAmorce.get()]
-        apartirde = self.entree_apartirde.get()
-        prefixe = self.entree_prefixe.get()
-        if self.value.get() == 'original':
+        amorce = self.MAPPING[self.amorce_box.get()]
+        apartirde = self.apartirde_entree.get()
+        prefixe = self.prefixe_entree.get()
+
+        if self.radio_var.get() == 'original':
             nomfichier = True
         else:
-            nomfichier = self.entree_nomfichier.get()
+            nomfichier = self.nomfichier_entree.get()
 
-        postfixe = self.entree_postfixe.get()
-        extension = self.entree_exConcernee.get().split(',')
+        postfixe = self.postfixe_entree.get()
+        extension = self.extension_entree.get().split(',')
 
         return Regle(amorce, apartirde, prefixe, nomfichier, postfixe, extension)
 
+    #suppression des données saisies dans les différentes entrées
+    def effacer(self):
+        self.nom_entree.delete(0, END)
+        self.combo_var.set('Aucune')
+        self.apartirde_entree.delete(0, END)
+        self.prefixe_entree.delete(0, END)
+        self.radio_var.set('original')
+        self.nomfichier_entree.delete(0, END)
+        self.postfixe_entree.delete(0, END)
+        self.extension_entree.delete(0, END)
+        self.nom_entree.focus_set()
