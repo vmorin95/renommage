@@ -1,2 +1,2 @@
 # renommage
-Application de renommage de fichier
+Application de renommage de fichiers
